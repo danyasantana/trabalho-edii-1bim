@@ -228,3 +228,117 @@ int lerArquivoRegistros(FILE *fp, ArvoreB *arvore) {
     
     return count;
 }
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        printf("Uso: %s <arquivo_registros> <arquivo_arvore>\n", argv[0]);
+        return 1;
+    }
+    
+    char *nomeArquivoRegistros = argv[1];
+    char *nomeArquivoArvore = argv[2];
+    
+    FILE *fpRegistros = fopen(nomeArquivoRegistros, "a+");
+    if (fpRegistros == NULL) {
+        printf("Erro ao abrir arquivo de registros.\n");
+        return 1;
+    }
+    
+    ArvoreB *arvore = criarArvore();
+    
+    int totalRegistros = lerArquivoRegistros(fpRegistros, arvore);
+    printf("Carregados %d registros na arvore B.\n", totalRegistros);
+    
+    int opcao;
+    int matricula;
+    char nome[100];
+    char telefone[20];
+    
+    do {
+        printf("\n=== Menu ===\n");
+        printf("1. Cadastrar\n");
+        printf("2. Pesquisar\n");
+        printf("3. Gravar\n");
+        printf("4. Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+        
+        while (getchar() != '\n');
+        
+        switch (opcao) {
+            case 1: {
+                printf("\n--- Cadastrar ---\n");
+                printf("Matricula: ");
+                scanf("%d", &matricula);
+                while (getchar() != '\n');
+                printf("Nome: ");
+                fgets(nome, sizeof(nome), stdin);
+                nome[strcspn(nome, "\n")] = 0;
+                printf("Telefone: ");
+                fgets(telefone, sizeof(telefone), stdin);
+                telefone[strcspn(telefone, "\n")] = 0;
+                
+                long offset = adicionarRegistro(fpRegistros, matricula, nome, telefone);
+                
+                Registro reg;
+                reg.matricula = matricula;
+                reg.offset = offset;
+                inserir(arvore, reg);
+                
+                printf("Cadastro realizado com sucesso!\n");
+                break;
+            }
+            case 2: {
+                printf("\n--- Pesquisar ---\n");
+                printf("Matricula: ");
+                scanf("%d", &matricula);
+                while (getchar() != '\n');
+                
+                NoArvore *noEncontrado = buscar(arvore->raiz, matricula);
+                
+                if (noEncontrado != NULL) {
+                    int idx = buscarIndice(noEncontrado, matricula);
+                    
+                    if (idx != -1) {
+                        char nomeBusca[100], telefoneBusca[20];
+                        lerRegistro(fpRegistros, noEncontrado->chaves[idx].offset, nomeBusca, telefoneBusca);
+                        printf("\nRegistro encontrado:\n");
+                        printf("Matricula: %d\n", matricula);
+                        printf("Nome: %s\n", nomeBusca);
+                        printf("Telefone: %s\n", telefoneBusca);
+                    }
+                } else {
+                    printf("Matricula nao encontrada.\n");
+                }
+                break;
+            }
+            case 3: {
+                FILE *fpArvore = fopen(nomeArquivoArvore, "w");
+                if (fpArvore == NULL) {
+                    printf("Erro ao criar arquivo de arvore.\n");
+                    break;
+                }
+                
+                fprintf(fpArvore, "Endereco raiz: %p\n", (void*)arvore->raiz);
+                fprintf(fpArvore, "=== Nos da Arvore B ===\n");
+                percursoPreOrdem(arvore->raiz, fpArvore);
+                fclose(fpArvore);
+                
+                printf("Arvore gravada com sucesso em %s!\n", nomeArquivoArvore);
+                break;
+            }
+            case 4: {
+                printf("Saindo...\n");
+                break;
+            }
+            default:
+                printf("Opcao invalida.\n");
+        }
+    } while (opcao != 4);
+    
+    liberarArvore(arvore->raiz);
+    free(arvore);
+    fclose(fpRegistros);
+    
+    return 0;
+}
