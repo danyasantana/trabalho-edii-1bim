@@ -8,6 +8,8 @@ Joao Vitor Luz de Souza (J0luz)
 
 Adam da Victoria Ribeiro (adamribeiro22)
 
+Lucas da Silva Ferreira (Lcs-SF)
+
 ## 🛠️ Funcionalidades
 O sistema oferece as seguintes operações:
 
