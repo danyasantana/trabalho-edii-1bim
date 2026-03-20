@@ -3,7 +3,9 @@ Este projeto é uma implementação de uma Árvore B em linguagem C, desenvolvid
 
 ## 👥 Desenvolvedores
 Daniel Alves Santana (danyasantana)
+
 Joao Vitor Luz de Souza (J0luz)
+
 Adam da Victoria Ribeiro (adamribeiro22)
 
 ## 🛠️ Funcionalidades
