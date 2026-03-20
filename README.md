@@ -10,6 +10,8 @@ Adam da Victoria Ribeiro (adamribeiro22)
 
 Lucas da Silva Ferreira (Lcs-SF)
 
+Luiz Gustavo Silva Cunha (luizgsilva1)
+
 ## 🛠️ Funcionalidades
 O sistema oferece as seguintes operações:
 
