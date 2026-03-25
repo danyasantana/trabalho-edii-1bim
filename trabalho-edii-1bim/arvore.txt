@@ -1,6 +1,2 @@
-Endereco raiz: 0x600000f20060
-=== Nos da Arvore B ===
-No: (matricula=1002, offset=28) | (matricula=1003, offset=58)
-No: (matricula=1001, offset=0)
-No: (matricula=1002, offset=28)
-No: (matricula=1003, offset=58) | (matricula=1004, offset=87)
+node_0
+node_0 4 1001 5 1002 33 1003 63 1004 92 null null null null null
